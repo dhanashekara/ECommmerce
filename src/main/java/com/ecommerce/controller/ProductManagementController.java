@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.dto.ProductDTO;
+import com.ecommerce.exception.ProductManagementException;
 import com.ecommerce.service.ProductService;
 
 @RestController
@@ -27,26 +28,26 @@ public class ProductManagementController {
 	ProductService prodService;
 
 	@PostMapping("/product")
-	public ResponseEntity<Object> registerProduct(@Valid @RequestBody ProductDTO productDTO) throws IOException{
+	public ResponseEntity<Object> registerProduct(@Valid @RequestBody ProductDTO productDTO) throws IOException, ProductManagementException{
 
-		status = prodService.registerProduct(productDTO);
+	//	status = prodService.registerProduct(productDTO);
 
-		if (status.equalsIgnoreCase("Product registered successfully"))
-			return new ResponseEntity<Object>(status, HttpStatus.CREATED);
-		else
-			return new ResponseEntity<Object>(status, HttpStatus.INTERNAL_SERVER_ERROR);
+	//	if (status.equalsIgnoreCase("Product registered successfully"))
+			return new ResponseEntity<Object>(prodService.registerProduct(productDTO), HttpStatus.CREATED);
+	//	else
+	//		return new ResponseEntity<Object>(status, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@GetMapping("/products/{productcategory}/{productname}")
 	public ResponseEntity<Object> getProductList(
 			@RequestParam(name = "productcategory", required = false) String productCategory,
-			@RequestParam(name = "productname", required = false) String productName) {
+			@RequestParam(name = "productname", required = false) String productName) throws ProductManagementException {
 
-		Object response = prodService.getProductList(productCategory, productName);
-		if (!response.equals("Product list is empty"))
-			return new ResponseEntity<Object>(response, HttpStatus.FOUND);
-		else
-			return new ResponseEntity<Object>(response, HttpStatus.NOT_FOUND);
+	//	Object response = prodService.getProductList(productCategory, productName);
+	//	if (!response.equals("Product list is empty"))
+			return new ResponseEntity<Object>(prodService.getProductList(productCategory, productName), HttpStatus.FOUND);
+	//	else
+	//		return new ResponseEntity<Object>(response, HttpStatus.NOT_FOUND);
 	}
 
 	/*
