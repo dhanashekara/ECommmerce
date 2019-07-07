@@ -3,6 +3,8 @@ package com.ecommerce.service;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.Before;
@@ -51,6 +53,7 @@ public class UserServiceTest {
 		// positive
 		when(modelMapper.map(userDTO, User.class)).thenReturn(userEntity);
 		when(userRepo.save(userEntity)).thenReturn(userEntity);
+	//	when(userRepo.findById(Mockito.anyLong())).thenReturn(Mockito.anyObject());
 		String actual = userService.registerUser(userDTO);
 		assertEquals("User Registration Successful", actual);
 
@@ -87,6 +90,47 @@ public class UserServiceTest {
 		 * assertEquals("User with ID "+userDTO.getUserId()+" doesn't exist", actual);
 		 */
 
+	}
+	
+	@Test
+	public void testDeleteUserProfile() throws UserManagementException {
+		
+		when(userRepo.findById(1L)).thenReturn(Optional.of(userEntity));
+		String actual = userService.deleteUserProfile(1L);
+		assertEquals("User Details deleted successfully", actual);
+		
+	}
+	
+	@Test
+	public void testGetUserListByCategory() {
+		
+		List<UserDTO> usersListDTO = new ArrayList<>();
+		usersListDTO.add(userDTO);
+		
+		List<User> usersList= new ArrayList<>();
+		usersList.add(userEntity);
+		
+		when(modelMapper.map(userEntity, UserDTO.class)).thenReturn(userDTO);
+		when(userRepo.findAllByUserCategoryIgnoreCase("buyers")).thenReturn(usersList);
+		List<UserDTO> actual = (List<UserDTO>) userService.getUserListByCategory("buyers");
+		assertEquals(usersListDTO.size(), actual.size());
+		
+		/*
+		 * //Negative Case userDTO.setUserId(100L); userEntity.setUserId(10L);
+		 * usersList.add(userEntity); usersListDTO.add(userDTO); Object actualNeg =
+		 * userService.getUserListByCategory("seller");
+		 * assertEquals("Users are not available", actualNeg);
+		 */
+	}
+	
+	@Test
+	public void testLogin() throws UserManagementException {
+		String userName = "anhi";
+		String password = "zjzcz";
+		
+		when(userRepo.findByUserNameAndPassword(userName, password)).thenReturn(userEntity);
+		String actual = userService.login(userName, password);
+		assertEquals("Login successful", actual);
 	}
 	
 }

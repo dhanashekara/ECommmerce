@@ -126,8 +126,32 @@ public class UserManagementControllerTest {
 		
 		when(userService.getUserListByCategory("buyers")).thenReturn(users);
 		ResponseEntity<Object> actual = umController.getBuyersList();
-		this.mockMvc.perform(post("/usermanagement/users/",21).contentType(MediaType.APPLICATION_JSON));
+		this.mockMvc.perform(post("/usermanagement/users/buyers").contentType(MediaType.APPLICATION_JSON));
 		assertEquals(200, actual.getStatusCodeValue());
+		
+		//negative
+		//users = null;
+		when(userService.getUserListByCategory("buyers")).thenReturn("Users are not available");
+		actual = umController.getBuyersList();
+		assertEquals(404, actual.getStatusCodeValue());
+		
+	}
+	
+	@Test
+	public void testGetSellersList() throws Exception {
+		
+		List<UserDTO> users = new ArrayList<UserDTO>();
+		
+		when(userService.getUserListByCategory("sellers")).thenReturn(users);
+		ResponseEntity<Object> actual = umController.getSellersList();
+		this.mockMvc.perform(post("/usermanagement/users/sellers").contentType(MediaType.APPLICATION_JSON));
+		assertEquals(200, actual.getStatusCodeValue());
+		
+		//negative
+		when(userService.getUserListByCategory("sellers")).thenReturn("Users are not available");
+		actual = umController.getSellersList();
+		assertEquals(404, actual.getStatusCodeValue());
+		
 	}
 
 	
