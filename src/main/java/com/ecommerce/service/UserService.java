@@ -46,10 +46,11 @@ public class UserService {
 				throw new UserManagementException("Something went wrong!! Please contact support team");// internal server error
 		
 		  } catch(Exception e) {
+			  System.out.println("error message "+e.getMessage());
 			 if(e.getMessage().contains("userEmail")) 
 				 throw new UserManagementException("Email should be entered in xyz@xyz.com format");
 			 else 
-				 throw new UserManagementException("Something went wrong!! Please contact support team");
+				 throw new UserManagementException(e.getMessage());
 		  }
 		 
 	}

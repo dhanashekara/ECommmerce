@@ -39,7 +39,7 @@ public class UserManagementController {
 	}
 
 	@PostMapping("/user")
-	public ResponseEntity<String> registerUser(@Valid @RequestBody UserDTO user) throws Exception {
+	public ResponseEntity<String> registerUser(@Valid @RequestBody UserDTO user) throws UserManagementException {
 
 	//	String status = userService.registerUser(user);
 	//	if (status.equalsIgnoreCase("User Registration Successful")) {
@@ -79,7 +79,7 @@ public class UserManagementController {
 	@GetMapping("/users/buyers")
 	public ResponseEntity<Object> getBuyersList() {
 
-		Object status = userService.getUserListByCategory("buyers");
+		Object status = userService.getUserListByCategory("buyer");
 		if (!status.equals("Users are not available"))
 			return new ResponseEntity<Object>(status, HttpStatus.OK);
 		else
@@ -90,7 +90,7 @@ public class UserManagementController {
 	@GetMapping("/users/sellers")
 	public ResponseEntity<Object> getSellersList() {
 
-		Object status = userService.getUserListByCategory("sellers");
+		Object status = userService.getUserListByCategory("seller");
 		if (!status.equals("Users are not available"))
 			return new ResponseEntity<Object>(status, HttpStatus.OK);
 		else
